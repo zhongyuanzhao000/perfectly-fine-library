@@ -1,0 +1,103 @@
+version: '3.4'
+
+services:
+  admin-auth-service:
+    image: admin-auth-service
+    build: 
+      context: admin-auth-service
+      dockerfile: ./Dockerfile
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: admin-auth-service
+
+  admin-service:
+    image: admin-service
+    build: 
+      context: admin-service
+      dockerfile: ./Dockerfile
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: admin-service
+
+  book-service:
+    image: book-service
+    build: 
+      context: book-service
+      dockerfile: ./Dockerfile
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: book-service
+
+  comment-service:
+    image: comment-service
+    build: 
+      context: comment-service
+      dockerfile: ./Dockerfile
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: comment-service
+
+  copy-service:
+    image: copy-service
+    build: 
+      context: copy-service
+      dockerfile: ./Dockerfile
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: copy-service
+
+  email-service:
+    image: email-service
+    build: 
+      context: email-service
+      dockerfile: ./Dockerfile
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: email-service
+
+  eureka-service:
+    image: eureka-service
+    build: 
+      context: eureka-service
+      dockerfile: ./Dockerfile
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: eureka-service
+
+  gateway-service:
+    image: gateway-service
+    build: 
+      context: gateway-service
+      dockerfile: ./Dockerfile
+    ports: 
+      - 80:8080
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: gateway-service
+
+  order-service:
+    image: order-service
+    build: 
+      context: order-service
+      dockerfile: ./Dockerfile
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: order-service
+
+  user-auth-service:
+    image: user-auth-service
+    build: 
+      context: user-auth-service
+      dockerfile: ./Dockerfile
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: user-auth-service
+
+  user-service:
+    image: user-service
+    build: 
+      context: user-service
+      dockerfile: ./Dockerfile
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: user-service
