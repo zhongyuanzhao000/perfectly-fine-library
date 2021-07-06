@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  perfectlyfinelibraryfrontend:
+    image: swr.cn-north-4.myhuaweicloud.com/fdse21group25/frontend
+    ports: 
+      - 80:80
+    environment: 
+      - NGINX_PORT=80
