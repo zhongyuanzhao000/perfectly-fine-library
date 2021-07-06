@@ -1,0 +1,27 @@
+server.port: 8085
+spring.application.name: copy-service
+
+eureka.client.service-url:
+  defaultZone: http://eureka-service:8761/eureka/
+
+management.endpoints.web.exposure.include: "*"
+
+fdse21.group25.binding-names:
+  order-event-copy-reply: &order-event-copy-reply-binding-name order-event-copy-reply
+  notify-event-copy-reply: &notify-event-copy-reply-binding-name notify-event-copy-reply
+
+spring.cloud:
+  function.definition: orderEventListener;configEventListener;notifyEventListener
+  stream:
+    kafka.binder.brokers: kafka
+    bindings:
+      orderEventListener-in-0:
+        destination: order-event
+      *order-event-copy-reply-binding-name:
+        destination: order-event-copy-reply
+      configEventListener-in-0:
+        destination: config-event
+      notifyEventListener-in-0:
+        destination: notify-event
+      *notify-event-copy-reply-binding-name:
+        destination: notify-event-copy-reply

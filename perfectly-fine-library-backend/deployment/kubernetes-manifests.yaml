@@ -1,0 +1,289 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /eureka
+            pathType: Prefix
+            backend:
+              service:
+                name: eureka-service
+                port:
+                  number: 8761
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway-service
+                port:
+                  number: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8761
+      targetPort: 8761
+  selector:
+    app: eureka
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: eureka
+      labels:
+        app: eureka
+    spec:
+      containers:
+        - name: eureka
+          image: springcloud/eureka
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8761
+              scheme: HTTP
+            initialDelaySeconds: 60
+            successThreshold: 1
+  selector:
+    matchLabels:
+      app: eureka
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: gateway
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  selector:
+    matchLabels:
+      app: gateway
+  replicas: 2
+  template:
+    metadata:
+      name: gateway
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway-service
+          image: swr.cn-north-4.myhuaweicloud.com/fdse21group25/gateway-service:latest
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            successThreshold: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-auth-service
+spec:
+  selector:
+    matchLabels:
+      app: admin-auth-service
+  replicas: 1
+  template:
+    metadata:
+      name: admin-auth-service
+      labels:
+        app: admin-auth-service
+    spec:
+      containers:
+        - name: admin-auth-service
+          image: swr.cn-north-4.myhuaweicloud.com/fdse21group25/admin-auth-service:latest
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            successThreshold: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-service
+spec:
+  selector:
+    matchLabels:
+      app: book-service
+  replicas: 1
+  template:
+    metadata:
+      name: book-service
+      labels:
+        app: book-service
+    spec:
+      containers:
+        - name: book-service
+          image: swr.cn-north-4.myhuaweicloud.com/fdse21group25/book-service:latest
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            successThreshold: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: copy-service
+spec:
+  selector:
+    matchLabels:
+      app: copy-service
+  replicas: 1
+  template:
+    metadata:
+      name: copy-service
+      labels:
+        app: copy-service
+    spec:
+      containers:
+        - name: copy-service
+          image: swr.cn-north-4.myhuaweicloud.com/fdse21group25/copy-service:latest
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            successThreshold: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-service
+spec:
+  selector:
+    matchLabels:
+      app: email-service
+  replicas: 1
+  template:
+    metadata:
+      name: email-service
+      labels:
+        app: email-service
+    spec:
+      containers:
+        - name: email-service
+          image: swr.cn-north-4.myhuaweicloud.com/fdse21group25/email-service:latest
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            successThreshold: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  selector:
+    matchLabels:
+      app: order-service
+  replicas: 1
+  template:
+    metadata:
+      name: order-service
+      labels:
+        app: order-service
+    spec:
+      containers:
+        - name: order-service
+          image: swr.cn-north-4.myhuaweicloud.com/fdse21group25/order-service:latest
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            successThreshold: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-auth-service
+spec:
+  selector:
+    matchLabels:
+      app: user-auth-service
+  replicas: 1
+  template:
+    metadata:
+      name: user-auth-service
+      labels:
+        app: user-auth-service
+    spec:
+      containers:
+        - name: user-auth-service
+          image: swr.cn-north-4.myhuaweicloud.com/fdse21group25/user-auth-service:latest
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            successThreshold: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  replicas: 1
+  template:
+    metadata:
+      name: user-service
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: swr.cn-north-4.myhuaweicloud.com/fdse21group25/user-service:latest
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            successThreshold: 1
