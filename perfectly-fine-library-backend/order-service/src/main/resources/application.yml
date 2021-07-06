@@ -1,0 +1,23 @@
+server.port: 8088
+spring.application.name: order-service
+
+eureka.client.service-url:
+  defaultZone: http://eureka-service:8761/eureka/
+
+management.endpoints.web.exposure.include: "*"
+
+fdse21.group25.binding-names:
+  order-event: &order-event-binding-name order-event
+  
+spring.cloud:
+  function.definition: copyReplyListener;userReplyListener
+  stream:
+    kafka.binder.brokers: kafka
+    bindings:
+      *order-event-binding-name:
+        destination: order-event
+        content-type: text/json
+      copyReplyListener-in-0:
+        destination: order-event-copy-reply
+      userReplyListener-in-0:
+        destination: order-event-user-reply
