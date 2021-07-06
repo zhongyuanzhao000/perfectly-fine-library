@@ -1,0 +1,28 @@
+server.port: 8090
+spring.application.name: user-service
+eureka.client.service-url:
+  defaultZone: http://eureka-service:8761/eureka/
+management.endpoints.web.exposure.include: "*"
+fdse21.group25.binding-names:
+  order-event-user-reply: &order-event-user-reply-binding-name order-event-user-reply
+  notify-event-user-reply: &notify-event-user-reply-binding-name notify-event-user-reply
+  comment-event-user-reply: &comment-event-user-reply-binding-name comment-event-user-reply
+spring.cloud:
+  function.definition: orderEventListener;configEventListener;notifyEventListener;commentEventListener
+  stream:
+    kafka.binder.brokers: kafka
+    bindings:
+      orderEventListener-in-0:
+        destination: order-event
+      *order-event-user-reply-binding-name:
+        destination: order-event-user-reply
+      configEventListener-in-0:
+        destination: config-event
+      notifyEventListener-in-0:
+        destination: notify-event
+      *notify-event-user-reply-binding-name:
+        destination: notify-event-user-reply
+      commentEventListener-in-0:
+        destination: comment-event
+      *comment-event-user-reply-binding-name:
+        destination: comment-event-user-reply
