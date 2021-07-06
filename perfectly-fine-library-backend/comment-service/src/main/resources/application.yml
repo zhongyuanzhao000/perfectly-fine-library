@@ -1,0 +1,18 @@
+server.port: 8084
+spring.application.name: comment-service
+
+eureka.client.service-url:
+  defaultZone: http://eureka-service:8761/eureka/
+
+fdse21.group25.binding-names:
+  comment-event: &comment-event-binding-name comment-event
+
+spring.cloud:
+  function.definition: userReplyListener
+  stream:
+    kafka.binder.brokers: kafka
+    bindings:
+      *comment-event-binding-name:
+        destination: comment-event
+      userReplyListener-in-0:
+        destination: comment-event-user-reply
