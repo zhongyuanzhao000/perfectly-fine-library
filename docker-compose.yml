@@ -1,0 +1,95 @@
+version: '3.4'
+
+services:
+  admin-auth-service:
+   image: registry.cn-hangzhou.aliyuncs.com/pflibrary/admin-auth-service
+   environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: admin-auth-service
+
+  admin-service:
+    image: registry.cn-hangzhou.aliyuncs.com/pflibrary/admin-service
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: admin-service
+
+  book-service:
+    image: registry.cn-hangzhou.aliyuncs.com/pflibrary/book-service
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: book-service
+
+  comment-service:
+    image: registry.cn-hangzhou.aliyuncs.com/pflibrary/comment-service
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: comment-service
+
+  copy-service:
+    image: registry.cn-hangzhou.aliyuncs.com/pflibrary/copy-service
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: copy-service
+
+  email-service:
+    image: registry.cn-hangzhou.aliyuncs.com/pflibrary/email-service
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: email-service
+
+  eureka-service:
+    image: registry.cn-hangzhou.aliyuncs.com/pflibrary/eureka-service
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: eureka-service
+
+  gateway-service:
+    image: registry.cn-hangzhou.aliyuncs.com/pflibrary/gateway-service
+    ports: 
+      - 80:8080
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: gateway-service
+
+  order-service:
+    image: registry.cn-hangzhou.aliyuncs.com/pflibrary/order-service
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: order-service
+
+  user-auth-service:
+    image: registry.cn-hangzhou.aliyuncs.com/pflibrary/user-auth-service
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: user-auth-service
+
+  user-service:
+    image: registry.cn-hangzhou.aliyuncs.com/pflibrary/user-service
+    environment: 
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap-server:11800
+      SW_AGENT_NAME: user-service
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    restart: unless-stopped
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+    depends_on:
+      - zookeeper
+
+  perfectlyfinelibraryfrontend:
+    image: registry.cn-shanghai.aliyuncs.com/akasakaisami/pflib-front
+    ports: 
+      - 8088:80
+    environment: 
+      - NGINX_PORT=80
+
+   
